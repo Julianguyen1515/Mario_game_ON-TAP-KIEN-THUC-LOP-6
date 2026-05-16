@@ -1,0 +1,5086 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anh Hùng Mũ Đỏ Cứu Công Chúa - Game Ôn Tập Lớp 6</title>
+  <style>
+* { box-sizing: border-box; }
+:root {
+  --blue: #1e8fff;
+  --red: #f04444;
+  --yellow: #ffd447;
+  --green: #46c96f;
+  --purple: #8b5cf6;
+  --ink: #17324d;
+}
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255,255,255,.5), transparent 28%),
+    linear-gradient(#6fd0ff 0%, #b9f5b0 60%, #f5cd81 100%);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 16px;
+  background: rgba(9, 50, 92, .30);
+  backdrop-filter: blur(10px);
+  color: white;
+  border-bottom: 2px solid rgba(255,255,255,.25);
+}
+.brand { display: flex; align-items: center; gap: 10px; min-width: 260px; }
+.logo { font-size: 34px; filter: drop-shadow(0 4px 0 rgba(0,0,0,.18)); }
+h1 { margin: 0; font-size: clamp(20px, 2vw, 28px); line-height: 1.05; }
+.brand p { margin: 2px 0 0; opacity: .92; font-weight: 700; font-size: 13px; }
+.stats { display: flex; flex-wrap: wrap; gap: 7px; justify-content: flex-end; font-weight: 900; }
+.stats div {
+  padding: 8px 10px;
+  background: rgba(255,255,255,.22);
+  border: 1px solid rgba(255,255,255,.38);
+  border-radius: 14px;
+  box-shadow: 0 6px 14px rgba(0,0,0,.10);
+}
+.subject-strip {
+  display: flex;
+  gap: 8px;
+  padding: 8px 14px;
+  overflow-x: auto;
+  background: rgba(255,255,255,.42);
+  border-bottom: 1px solid rgba(255,255,255,.6);
+}
+.world-pill {
+  white-space: nowrap;
+  border: 2px solid rgba(255,255,255,.8);
+  background: rgba(255,255,255,.75);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 900;
+  font-size: 14px;
+  box-shadow: 0 5px 12px rgba(0,0,0,.09);
+}
+.world-pill.active {
+  background: #fff2a4;
+  border-color: #ffb800;
+  transform: translateY(-1px);
+}
+.one-screen {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 10px 14px 18px;
+}
+.play-card {
+  background: rgba(255,255,255,.90);
+  border: 5px solid #ffd84d;
+  border-radius: 26px;
+  box-shadow: 0 18px 36px rgba(0,0,0,.17);
+  overflow: hidden;
+}
+.mission-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: linear-gradient(90deg, #fb5a54, #ffb547);
+}
+.badge {
+  display: inline-block;
+  padding: 7px 11px;
+  margin-right: 6px;
+  border-radius: 999px;
+  background: #2674d9;
+  color: white;
+  font-weight: 900;
+  font-size: 14px;
+}
+.badge.secondary { background: #7c3aed; }
+.timer {
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.88);
+  font-size: 19px;
+  font-weight: 900;
+  color: #c64200;
+}
+.split {
+  display: grid;
+  grid-template-columns: minmax(460px, 1.18fr) minmax(360px, .82fr);
+  gap: 12px;
+  padding: 12px;
+}
+.canvas-wrap {
+  background: #e8f8ff;
+  border: 4px solid #9be2ff;
+  border-radius: 22px;
+  padding: 8px;
+  min-width: 0;
+}
+canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 18px;
+  background: #8cd7ff;
+}
+.progress-zone {
+  margin-top: 8px;
+  display: grid;
+  gap: 5px;
+  font-weight: 900;
+}
+.progress-zone > div:first-child {
+  display: flex;
+  justify-content: space-between;
+}
+.progress-wrap {
+  width: 100%;
+  height: 18px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 2px solid white;
+}
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg,#ff4d6d,#ffd93d,#4dd66d);
+  transition: width .45s;
+}
+.quiz-box {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.daily-card {
+  background: #fff7cc;
+  border: 2px solid #ffd447;
+  padding: 10px 12px;
+  border-radius: 18px;
+  font-size: 14px;
+}
+#questionText {
+  flex: 0 0 auto;
+  margin: 0;
+  font-size: clamp(19px, 2vw, 27px);
+  line-height: 1.3;
+  background: #f2f8ff;
+  padding: 16px;
+  border-radius: 20px;
+  border: 2px solid #d9edff;
+  box-shadow: inset 0 2px 0 rgba(255,255,255,.8);
+}
+.answers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.answer-btn {
+  min-height: 66px;
+  padding: 13px 12px;
+  border-radius: 19px;
+  border: 4px solid white;
+  box-shadow: 0 7px 0 rgba(0,0,0,.18);
+  font-size: clamp(15px, 1.4vw, 19px);
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .12s, filter .12s;
+}
+.answer-btn:hover { transform: translateY(-3px) scale(1.01); filter: brightness(1.03); }
+.answer-btn.correct { outline: 6px solid #1cbf4f; }
+.answer-btn.wrong { outline: 6px solid #e60023; }
+.answers .answer-btn:nth-child(1) { background: #ff8f8f; }
+.answers .answer-btn:nth-child(2) { background: #8dffb0; }
+.answers .answer-btn:nth-child(3) { background: #ffec7a; }
+.answers .answer-btn:nth-child(4) { background: #c49cff; }
+.game-message {
+  background: #fff7c7;
+  border: 2px solid #ffd84d;
+  padding: 10px;
+  border-radius: 16px;
+  font-weight: 900;
+  text-align: center;
+}
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: auto;
+}
+.primary-btn, .secondary-btn, .small-btn {
+  border: none;
+  cursor: pointer;
+  font-weight: 900;
+  border-radius: 16px;
+  padding: 12px 14px;
+  box-shadow: 0 7px 0 rgba(0,0,0,.16);
+}
+.primary-btn { background: #ff5757; color: white; }
+.secondary-btn { background: #ffe169; color: #4c3500; }
+.small-btn { background: #54b6ff; color: white; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+.reward-row {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.reward-card {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255,255,255,.86);
+  border: 2px solid rgba(255,255,255,.85);
+  border-radius: 20px;
+  padding: 11px;
+  box-shadow: 0 8px 18px rgba(0,0,0,.11);
+  font-size: 14px;
+}
+.reward-card .big { font-size: 34px; }
+footer {
+  text-align: center;
+  color: #31506b;
+  padding: 0 20px 14px;
+  font-weight: 800;
+  font-size: 13px;
+}
+@media (max-width: 1050px) {
+  .split { grid-template-columns: 1fr; }
+  .reward-row { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .topbar { flex-direction: column; align-items: flex-start; }
+  .stats { justify-content: flex-start; }
+  .answers { grid-template-columns: 1fr; }
+  .reward-row { grid-template-columns: 1fr; }
+  .mission-row { flex-direction: column; align-items: flex-start; }
+}
+
+</style>
+</head>
+<body>
+  <noscript><div style="padding:20px;background:#fff3cd;color:#664d03;font-weight:bold">Trình duyệt đang tắt JavaScript. Hãy bật JavaScript để chạy game.</div></noscript>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">🍄</span>
+        <div>
+          <h1>Anh Hùng Mũ Đỏ Cứu Công Chúa</h1>
+          <p>Học 30 phút/ngày qua game phiêu lưu</p>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div>❤️ <span id="lives">3</span></div>
+        <div>🪙 <span id="coins">0</span></div>
+        <div>⭐ <span id="score">0</span></div>
+        <div>🔥 <span id="combo">0</span></div>
+        <div>📅 Streak <span id="streak">1</span></div>
+      </div>
+    </header>
+
+    <nav class="subject-strip" id="worldList"></nav>
+
+    <main class="one-screen">
+      <section class="play-card">
+        <div class="mission-row">
+          <div>
+            <span id="subjectBadge" class="badge">Môn học</span>
+            <span id="difficultyBadge" class="badge secondary">Độ khó</span>
+          </div>
+          <div class="timer">⏰ <span id="timer">25</span>s</div>
+        </div>
+
+        <div class="split">
+          <div class="canvas-wrap">
+            <canvas id="gameCanvas" width="900" height="430"></canvas>
+            <div class="progress-zone">
+              <div>
+                <strong>👸 Cứu công chúa</strong>
+                <span id="progressText">0%</span>
+              </div>
+              <div class="progress-wrap">
+                <div id="rescueProgress" class="progress-bar"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="quiz-box">
+            <div class="daily-card">
+              <div>🎯 Nhiệm vụ hôm nay</div>
+              <strong>Đúng 10 câu để mở rương kho báu</strong>
+            </div>
+
+            <h2 id="questionText">Sẵn sàng phiêu lưu chưa?</h2>
+            <div id="answers" class="answers"></div>
+
+            <div class="game-message" id="gameMessage">Bấm “Bắt đầu” để vào màn chơi đầu tiên.</div>
+
+            <div class="controls">
+              <button id="startBtn" class="primary-btn">🚀 Bắt đầu</button>
+              <button id="nextBtn" class="secondary-btn" disabled>➡️ Câu tiếp theo</button>
+              <button id="toggleSound" class="small-btn">🔊 Âm thanh</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="reward-row">
+        <div class="reward-card">
+          <div class="big">🎁</div>
+          <div><strong>Rương ngày</strong><br><span id="dailyChest">0/10 câu đúng</span></div>
+        </div>
+        <div class="reward-card">
+          <div class="big">🛍️</div>
+          <div><strong>Shop</strong><br>Đổi xu lấy tim, sao, skin</div>
+        </div>
+        <div class="reward-card">
+          <div class="big">🏆</div>
+          <div><strong>Huy hiệu</strong><br>Chinh phục đủ 8 môn</div>
+        </div>
+        <div class="reward-card">
+          <div class="big">🐣</div>
+          <div><strong>Pet học tập</strong><br>Học mỗi ngày để pet lớn lên</div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Nhân vật được vẽ riêng bằng Canvas theo phong cách game platform vui nhộn, không dùng asset bản quyền.</p>
+    </footer>
+  </div>
+
+  <script>
+window.QUESTION_BANK = [
+  {
+    "subject": "Toán",
+    "question": "Một pháp sư có 125 viên ngọc, nhận thêm 47 viên. Pháp sư có tất cả bao nhiêu viên ngọc?",
+    "answers": [
+      "162",
+      "172",
+      "182",
+      "192"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Con rồng ăn 36 chiếc bánh mỗi ngày. Trong 5 ngày, rồng ăn bao nhiêu chiếc bánh?",
+    "answers": [
+      "150",
+      "160",
+      "170",
+      "180"
+    ],
+    "correct": "D",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Số nào lớn nhất?",
+    "answers": [
+      "908",
+      "980",
+      "890",
+      "809"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Minh ăn 1/4 chiếc bánh, Lan ăn 2/4 chiếc bánh. Hai bạn ăn tất cả bao nhiêu phần chiếc bánh?",
+    "answers": [
+      "1/4",
+      "2/4",
+      "3/4",
+      "4/4"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Phân số nào bằng 1/2?",
+    "answers": [
+      "2/4",
+      "2/3",
+      "3/5",
+      "4/5"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Một hình vuông có cạnh 6cm. Chu vi hình vuông là:",
+    "answers": [
+      "12cm",
+      "18cm",
+      "24cm",
+      "36cm"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Hình tam giác có bao nhiêu cạnh?",
+    "answers": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Diện tích hình chữ nhật dài 8cm, rộng 5cm là:",
+    "answers": [
+      "13cm²",
+      "26cm²",
+      "35cm²",
+      "40cm²"
+    ],
+    "correct": "D",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Nhà thám hiểm tìm thấy 53 đồng xu và nhặt thêm 89 đồng xu. Bạn ấy có tất cả bao nhiêu đồng xu?",
+    "answers": [
+      "139",
+      "147",
+      "142",
+      "152"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Một tia có đặc điểm gì?",
+    "answers": [
+      "Có hai đầu",
+      "Có một đầu",
+      "Không có đầu",
+      "Là đường tròn"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Điểm nào nằm giữa hai điểm A và C trên đoạn thẳng A-B-C?",
+    "answers": [
+      "A",
+      "B",
+      "C",
+      "Không điểm nào"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Kết quả của 2² là:",
+    "answers": [
+      "2",
+      "4",
+      "6",
+      "8"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Trong các số sau, số nào là hợp số?",
+    "answers": [
+      "2",
+      "3",
+      "5",
+      "9"
+    ],
+    "correct": "D",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Một năm nhuận có bao nhiêu ngày?",
+    "answers": [
+      "364",
+      "365",
+      "366",
+      "367"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Đơn vị nào lớn nhất?",
+    "answers": [
+      "cm",
+      "dm",
+      "m",
+      "mm"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Nếu hôm nay là thứ Hai, sau 10 ngày nữa sẽ là thứ mấy?",
+    "answers": [
+      "Thứ Tư",
+      "Thứ Năm",
+      "Thứ Sáu",
+      "Chủ Nhật"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Số La Mã XII có giá trị là:",
+    "answers": [
+      "10",
+      "11",
+      "12",
+      "13"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Một hình có 4 cạnh bằng nhau và 4 góc vuông là:",
+    "answers": [
+      "Hình chữ nhật",
+      "Hình vuông",
+      "Hình tam giác",
+      "Hình thang"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Nếu đồng hồ chỉ 3 giờ đúng thì kim phút chỉ số:",
+    "answers": [
+      "3",
+      "6",
+      "9",
+      "12"
+    ],
+    "correct": "D",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Nhà thám hiểm tìm thấy 172 đồng xu và nhặt thêm 48 đồng xu. Bạn ấy có tất cả bao nhiêu đồng xu?",
+    "answers": [
+      "230",
+      "217",
+      "225",
+      "220"
+    ],
+    "correct": "D",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "3/5 lớn hơn hay nhỏ hơn 1/2?",
+    "answers": [
+      "Lớn hơn",
+      "Nhỏ hơn",
+      "Bằng nhau",
+      "Không xác định"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Một cửa hàng giảm giá 20% cho chiếc áo 100.000 đồng. Số tiền được giảm là:",
+    "answers": [
+      "10.000",
+      "15.000",
+      "20.000",
+      "25.000"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Nếu x + 15 = 48 thì x bằng:",
+    "answers": [
+      "23",
+      "33",
+      "43",
+      "53"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Một xe chạy 60km trong 2 giờ. Trung bình mỗi giờ đi được:",
+    "answers": [
+      "20km",
+      "30km",
+      "40km",
+      "50km"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "2/3 + 1/6 bằng:",
+    "answers": [
+      "3/9",
+      "5/6",
+      "1/2",
+      "2/6"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Một lớp có 40 học sinh, 25% là học sinh giỏi. Có bao nhiêu học sinh giỏi?",
+    "answers": [
+      "5",
+      "10",
+      "15",
+      "20"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Một cánh cửa phép thuật ghi: x + 14 = 24. Giá trị của x là bao nhiêu?",
+    "answers": [
+      "10",
+      "12",
+      "9",
+      "15"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Kết quả của (-3) × (-4) là:",
+    "answers": [
+      "-12",
+      "12",
+      "7",
+      "-7"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Một số chia cho 5 dư 2. Số nào dưới đây phù hợp?",
+    "answers": [
+      "25",
+      "32",
+      "40",
+      "55"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Số đối của -8 là:",
+    "answers": [
+      "-8",
+      "0",
+      "8",
+      "16"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Trên trục số, số nào gần 0 nhất?",
+    "answers": [
+      "-2",
+      "3",
+      "1",
+      "-1"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Tính giá trị biểu thức: 15 - (3 + 4)",
+    "answers": [
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Một hộp có 24 viên kẹo, chia đều vào 6 túi. Mỗi túi có:",
+    "answers": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Một góc nhỏ hơn 90° gọi là:",
+    "answers": [
+      "Góc vuông",
+      "Góc bẹt",
+      "Góc tù",
+      "Góc nhọn"
+    ],
+    "correct": "D",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Nếu 1 giờ 30 phút = ?",
+    "answers": [
+      "90 phút",
+      "100 phút",
+      "120 phút",
+      "75 phút"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Số nào vừa chia hết cho 2 vừa chia hết cho 5?",
+    "answers": [
+      "35",
+      "42",
+      "50",
+      "63"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Tổng ba góc trong một tam giác bằng:",
+    "answers": [
+      "90°",
+      "180°",
+      "270°",
+      "360°"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Một hình lập phương có bao nhiêu cạnh?",
+    "answers": [
+      "8",
+      "10",
+      "12",
+      "14"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Giá trị tuyệt đối của -15 là:",
+    "answers": [
+      "-15",
+      "0",
+      "15",
+      "30"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Một xe xuất phát lúc 7h15 và đến nơi lúc 9h00. Thời gian đi là:",
+    "answers": [
+      "1 giờ 15 phút",
+      "1 giờ 30 phút",
+      "1 giờ 45 phút",
+      "2 giờ"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 35
+  },
+  {
+    "subject": "Toán",
+    "question": "Một kho báu được chia cho 5 hiệp sĩ. Mỗi người nhận 24 đồng vàng. Kho báu có tất cả bao nhiêu đồng vàng?",
+    "answers": [
+      "100",
+      "110",
+      "120",
+      "130"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Một hình chữ nhật có chu vi 30cm, chiều dài 9cm. Chiều rộng là:",
+    "answers": [
+      "4cm",
+      "5cm",
+      "6cm",
+      "7cm"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Nếu 3x = 72 thì x bằng:",
+    "answers": [
+      "12",
+      "18",
+      "24",
+      "36"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Một bình chứa 3/4 lít nước. Đổ thêm 1/2 lít nước nữa. Bình có tất cả:",
+    "answers": [
+      "4/6",
+      "5/4",
+      "6/4",
+      "7/4"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Một game thủ đạt 1200 điểm sau 6 màn chơi. Trung bình mỗi màn được bao nhiêu điểm?",
+    "answers": [
+      "150",
+      "180",
+      "200",
+      "220"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Một đội thám hiểm có 4 người. Mỗi người mang 42 viên ngọc. Cả đội có bao nhiêu viên ngọc?",
+    "answers": [
+      "168",
+      "178",
+      "163",
+      "188"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Một bể nước chứa 120 lít. Đã dùng hết 35 lít. Còn lại bao nhiêu lít?",
+    "answers": [
+      "75",
+      "80",
+      "85",
+      "90"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Toán",
+    "question": "Một cửa hàng bán 3 cây bút giá 12.000 đồng/cây và 2 quyển vở giá 8.000 đồng/quyển. Tổng số tiền là:",
+    "answers": [
+      "48.000",
+      "50.000",
+      "52.000",
+      "54.000"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 40
+  },
+  {
+    "subject": "Toán",
+    "question": "Một bạn đi bộ 2,5km buổi sáng và 1,75km buổi chiều. Tổng quãng đường đi được là:",
+    "answers": [
+      "3,25km",
+      "4km",
+      "4,25km",
+      "4,5km"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Toán",
+    "question": "Một đội thám hiểm có 6 người. Mỗi người mang 47 viên ngọc. Cả đội có bao nhiêu viên ngọc?",
+    "answers": [
+      "282",
+      "292",
+      "277",
+      "302"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Cổng thành Số học chỉ mở khi chọn đúng số nguyên âm. Số nào dưới đây là số nguyên âm?",
+    "answers": [
+      "7",
+      "0",
+      "-5",
+      "12"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Trên bản đồ kho báu, nhiệt độ ban đêm là -3°C và ban ngày là 5°C. Nhiệt độ nào thấp hơn?",
+    "answers": [
+      "-3°C",
+      "5°C",
+      "Cả hai bằng nhau",
+      "Không xác định"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Bạn Rồng xếp các viên ngọc theo thứ tự tăng dần. Dãy nào đúng?",
+    "answers": [
+      "3; -1; 0; 5",
+      "-1; 0; 3; 5",
+      "5; 3; 0; -1",
+      "0; -1; 3; 5"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Pháp sư cần tính nhanh: 48 + 27 = ?",
+    "answers": [
+      "65",
+      "75",
+      "85",
+      "95"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Trong mê cung, cửa số 1 ghi: 12 × 8. Kết quả là:",
+    "answers": [
+      "80",
+      "86",
+      "96",
+      "108"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Một rương có 36 đồng vàng, chia đều cho 4 bạn. Mỗi bạn nhận được:",
+    "answers": [
+      "6",
+      "8",
+      "9",
+      "12"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Số nào chia hết cho 2?",
+    "answers": [
+      "135",
+      "246",
+      "319",
+      "501"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Số nào chia hết cho 5?",
+    "answers": [
+      "124",
+      "236",
+      "350",
+      "417"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Số nào là số nguyên tố?",
+    "answers": [
+      "1",
+      "9",
+      "11",
+      "15"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Phân số nào bằng 1/2?",
+    "answers": [
+      "2/4",
+      "3/4",
+      "1/3",
+      "5/6"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Minh ăn 1/4 chiếc bánh, Lan ăn 2/4 chiếc bánh. Hai bạn ăn tất cả:",
+    "answers": [
+      "1/4",
+      "2/4",
+      "3/4",
+      "4/4"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Số thập phân 3,5 đọc là:",
+    "answers": [
+      "Ba phẩy năm",
+      "Ba mươi lăm",
+      "Ba phần năm",
+      "Năm phẩy ba"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "0,7 lớn hơn số nào dưới đây?",
+    "answers": [
+      "0,9",
+      "0,8",
+      "0,6",
+      "1,0"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Hình tam giác có bao nhiêu cạnh?",
+    "answers": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Một hình vuông có cạnh 6cm. Chu vi là:",
+    "answers": [
+      "12cm",
+      "18cm",
+      "24cm",
+      "36cm"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Góc vuông có số đo là:",
+    "answers": [
+      "45°",
+      "60°",
+      "90°",
+      "180°"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Trong biểu đồ tranh, mỗi hình sao đại diện 2 học sinh. Có 5 hình sao nghĩa là có:",
+    "answers": [
+      "5 học sinh",
+      "7 học sinh",
+      "10 học sinh",
+      "12 học sinh"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Tung một đồng xu công bằng, có mấy kết quả có thể xảy ra?",
+    "answers": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Toán",
+    "question": "Quái vật Băng giá đứng ở vị trí -4, sau đó tiến thêm 7 bước. Nó ở vị trí nào trên trục số?",
+    "answers": [
+      "3",
+      "-3",
+      "11",
+      "-11"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Tàu ngầm ở độ sâu -20m, sau đó nổi lên 8m. Vị trí mới của tàu là:",
+    "answers": [
+      "-28m",
+      "-12m",
+      "12m",
+      "28m"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Tính: (-6) + 9 = ?",
+    "answers": [
+      "-15",
+      "-3",
+      "3",
+      "15"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Tính: 5 - 12 = ?",
+    "answers": [
+      "17",
+      "-17",
+      "7",
+      "-7"
+    ],
+    "correct": "D",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Cánh cửa mật mã yêu cầu số chia hết cho cả 2 và 3. Số nào phù hợp?",
+    "answers": [
+      "124",
+      "135",
+      "246",
+      "305"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Ước chung lớn nhất của 12 và 18 là:",
+    "answers": [
+      "3",
+      "6",
+      "9",
+      "12"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Bội chung nhỏ nhất của 4 và 6 là:",
+    "answers": [
+      "10",
+      "12",
+      "18",
+      "24"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Rút gọn phân số 12/18 được:",
+    "answers": [
+      "2/3",
+      "3/4",
+      "4/5",
+      "6/9"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Tính: 2/3 + 1/6 = ?",
+    "answers": [
+      "3/9",
+      "1/2",
+      "5/6",
+      "2/9"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Tính: 5/6 - 1/3 = ?",
+    "answers": [
+      "1/6",
+      "1/2",
+      "2/3",
+      "4/3"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Một lọ phép thuật có 3/4 lít nước. Đổ thêm 1/2 lít. Tổng lượng nước là:",
+    "answers": [
+      "4/6 lít",
+      "5/4 lít",
+      "6/4 lít",
+      "7/4 lít"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Tính: 2,5 + 3,75 = ?",
+    "answers": [
+      "5,25",
+      "6,25",
+      "6,75",
+      "7,25"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Một thanh kiếm dài 1,2m, cây gậy dài 0,85m. Thanh kiếm dài hơn cây gậy:",
+    "answers": [
+      "0,25m",
+      "0,35m",
+      "0,45m",
+      "2,05m"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Một cửa hàng giảm giá 20% cho áo giá 100.000 đồng. Số tiền được giảm là:",
+    "answers": [
+      "10.000 đồng",
+      "15.000 đồng",
+      "20.000 đồng",
+      "25.000 đồng"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Lớp có 40 học sinh, 25% là học sinh giỏi. Số học sinh giỏi là:",
+    "answers": [
+      "5",
+      "10",
+      "15",
+      "20"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Tỉ số của 6 viên ngọc đỏ và 18 viên ngọc xanh là:",
+    "answers": [
+      "1:2",
+      "1:3",
+      "2:3",
+      "3:1"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Một hình chữ nhật dài 8cm, rộng 5cm. Diện tích là:",
+    "answers": [
+      "13cm²",
+      "26cm²",
+      "35cm²",
+      "40cm²"
+    ],
+    "correct": "D",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Một góc có số đo 120°. Đây là góc:",
+    "answers": [
+      "nhọn",
+      "vuông",
+      "tù",
+      "bẹt"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Toán",
+    "question": "Điểm M là trung điểm của AB, AB = 10cm. Độ dài AM là:",
+    "answers": [
+      "3cm",
+      "5cm",
+      "7cm",
+      "10cm"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Toán",
+    "question": "Trong túi có 3 bi đỏ và 2 bi xanh. Lấy ngẫu nhiên 1 viên. Khả năng lấy bi đỏ là:",
+    "answers": [
+      "1/5",
+      "2/5",
+      "3/5",
+      "5/3"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Mật mã kho báu là kết quả của: 36 : 3 + 4 × 5. Mật mã đúng là:",
+    "answers": [
+      "32",
+      "36",
+      "52",
+      "80"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Toán",
+    "question": "Một đội thám hiểm đi 3 chặng: 12,5km; 8,75km; 6,25km. Tổng quãng đường là:",
+    "answers": [
+      "26,5km",
+      "27,5km",
+      "28,5km",
+      "29,5km"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Toán",
+    "question": "Một mảnh vườn hình chữ nhật có chu vi 30m, chiều dài 9m. Chiều rộng là:",
+    "answers": [
+      "4m",
+      "5m",
+      "6m",
+      "7m"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Toán",
+    "question": "Nếu x + 15 = 48 thì x bằng:",
+    "answers": [
+      "23",
+      "33",
+      "43",
+      "53"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Nếu 3x = 72 thì x bằng:",
+    "answers": [
+      "12",
+      "18",
+      "24",
+      "36"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Toán",
+    "question": "Một lớp muốn chia 24 bút và 36 vở thành các phần quà giống nhau nhiều nhất. Có thể chia nhiều nhất bao nhiêu phần quà?",
+    "answers": [
+      "6",
+      "8",
+      "12",
+      "24"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 40
+  },
+  {
+    "subject": "Toán",
+    "question": "Đèn đỏ nhấp nháy mỗi 6 giây, đèn xanh mỗi 8 giây. Sau bao lâu hai đèn cùng nhấp nháy lại?",
+    "answers": [
+      "12 giây",
+      "18 giây",
+      "24 giây",
+      "48 giây"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 40
+  },
+  {
+    "subject": "Toán",
+    "question": "Một bình có 2 lít nước. Bạn dùng hết 3/5 lít rồi thêm 1/10 lít. Lượng nước còn lại là:",
+    "answers": [
+      "3/2 lít",
+      "7/5 lít",
+      "5/4 lít",
+      "11/10 lít"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 45
+  },
+  {
+    "subject": "Toán",
+    "question": "Một chiếc bánh được chia cho 4 bạn theo tỉ lệ 1:1:2:4. Bạn nhận phần lớn nhất được bao nhiêu phần chiếc bánh?",
+    "answers": [
+      "1/8",
+      "1/4",
+      "1/2",
+      "3/4"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 45
+  },
+  {
+    "subject": "Toán",
+    "question": "Biểu đồ cho biết số sách đọc trong 4 tuần: 3, 5, 4, 8. Trung bình mỗi tuần đọc:",
+    "answers": [
+      "4 quyển",
+      "5 quyển",
+      "6 quyển",
+      "8 quyển"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Toán",
+    "question": "Một hộp có 2 bi đỏ, 3 bi xanh, 5 bi vàng. Xác suất lấy được bi vàng là:",
+    "answers": [
+      "1/5",
+      "1/2",
+      "3/10",
+      "5/12"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 40
+  },
+  {
+    "subject": "Toán",
+    "question": "Khối lập phương có 6 mặt đều là hình gì?",
+    "answers": [
+      "Tam giác",
+      "Hình vuông",
+      "Hình tròn",
+      "Hình thang"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 25
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Lan cúi đầu khi bị cô giáo nhắc bài. Lan cảm thấy gì?",
+    "answers": [
+      "Vui vẻ",
+      "Tự hào",
+      "Xấu hổ",
+      "Phấn khích"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Từ nào là danh từ?",
+    "answers": [
+      "Chạy",
+      "Đẹp",
+      "Học sinh",
+      "Nhanh"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Từ nào là động từ?",
+    "answers": [
+      "Ăn",
+      "Màu đỏ",
+      "Bàn ghế",
+      "Xinh đẹp"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Từ nào là tính từ?",
+    "answers": [
+      "Học sinh",
+      "Đi học",
+      "Xanh biếc",
+      "Con mèo"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Câu nào là câu kể?",
+    "answers": [
+      "Bạn khỏe không?",
+      "Ôi đẹp quá!",
+      "Em đi học.",
+      "Hãy mở cửa!"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Từ đồng nghĩa với 'siêng năng' là:",
+    "answers": [
+      "Lười biếng",
+      "Chăm chỉ",
+      "Ồn ào",
+      "Buồn bã"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Từ trái nghĩa với 'cao' là:",
+    "answers": [
+      "Dài",
+      "To",
+      "Thấp",
+      "Rộng"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong câu 'Mèo con đang ngủ', từ nào là chủ ngữ?",
+    "answers": [
+      "Mèo con",
+      "Đang",
+      "Ngủ",
+      "Con"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Dấu câu nào dùng để kết thúc câu hỏi?",
+    "answers": [
+      ".",
+      ",",
+      "!",
+      "?"
+    ],
+    "correct": "D",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Từ nào chỉ hoạt động?",
+    "answers": [
+      "Chạy",
+      "Hoa",
+      "Xinh",
+      "Bầu trời"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Câu nào thể hiện cảm xúc?",
+    "answers": [
+      "Em đi học.",
+      "Bạn tên gì?",
+      "Ôi, đẹp quá!",
+      "Hôm nay trời mưa."
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong câu 'Lan học bài chăm chỉ', từ 'chăm chỉ' là:",
+    "answers": [
+      "Danh từ",
+      "Động từ",
+      "Tính từ",
+      "Đại từ"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Từ nào viết đúng chính tả?",
+    "answers": [
+      "Suy nghỉ",
+      "Suy nghĩ",
+      "Xuy nghĩ",
+      "Sui nghĩ"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Từ nào là từ láy?",
+    "answers": [
+      "Long lanh",
+      "Bàn ghế",
+      "Xe đạp",
+      "Học sinh"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Từ nào là từ ghép?",
+    "answers": [
+      "Lấp lánh",
+      "Xinh xắn",
+      "Bút chì",
+      "Long lanh"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong truyện cổ tích thường có:",
+    "answers": [
+      "Rô-bốt",
+      "Phép màu",
+      "Phi thuyền",
+      "Máy tính"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Người kể chuyện thường xưng là:",
+    "answers": [
+      "Tôi",
+      "Bạn",
+      "Cậu",
+      "Chúng ta"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Đọc câu: 'Trời tối đen như mực'. Biện pháp tu từ được dùng là:",
+    "answers": [
+      "Nhân hóa",
+      "So sánh",
+      "Ẩn dụ",
+      "Điệp từ"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong câu 'Những bông hoa đang mỉm cười', tác giả đã dùng biện pháp:",
+    "answers": [
+      "So sánh",
+      "Ẩn dụ",
+      "Nhân hóa",
+      "Điệp ngữ"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Ý chính của đoạn văn là gì? 'Lan luôn giúp đỡ bạn bè, chăm học và lễ phép.'",
+    "answers": [
+      "Lan học giỏi",
+      "Lan tốt bụng và ngoan",
+      "Lan thích chơi",
+      "Lan hay buồn"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Câu nào có sử dụng dấu phẩy đúng?",
+    "answers": [
+      "Hôm nay em đi học và trời mưa.",
+      "Hôm nay, em đi học và trời mưa.",
+      "Hôm nay em, đi học và trời mưa.",
+      "Hôm nay em đi học, và trời mưa."
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong câu 'Tiếng suối chảy róc rách', từ láy là:",
+    "answers": [
+      "Tiếng",
+      "Suối",
+      "Chảy",
+      "Róc rách"
+    ],
+    "correct": "D",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Đọc đoạn văn và chọn cảm xúc phù hợp: 'Nam đứng lặng khi làm vỡ bình hoa của mẹ.'",
+    "answers": [
+      "Tự hào",
+      "Lo lắng",
+      "Phấn khích",
+      "Vui vẻ"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong truyện, nhân vật chính thường là:",
+    "answers": [
+      "Người xuất hiện ít nhất",
+      "Người quan trọng nhất",
+      "Người kể chuyện",
+      "Người xấu nhất"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Từ nào dưới đây là đại từ?",
+    "answers": [
+      "Tôi",
+      "Chạy",
+      "Đẹp",
+      "Hoa"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong câu 'Mặt trời thức dậy', hình ảnh nào được nhân hóa?",
+    "answers": [
+      "Mặt trời",
+      "Thức dậy",
+      "Cả câu",
+      "Không có"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Mở bài của bài văn thường dùng để:",
+    "answers": [
+      "Kết thúc câu chuyện",
+      "Giới thiệu nội dung",
+      "Nêu cảm nghĩ",
+      "Kể diễn biến"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Kết bài của bài văn thường có nhiệm vụ:",
+    "answers": [
+      "Mở đầu câu chuyện",
+      "Miêu tả nhân vật",
+      "Kết thúc và nêu cảm nghĩ",
+      "Giới thiệu sự việc"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong câu 'Con đường làng quanh co', từ 'quanh co' là:",
+    "answers": [
+      "Danh từ",
+      "Động từ",
+      "Tính từ",
+      "Đại từ"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Từ nào phù hợp nhất để tả bầu trời đêm?",
+    "answers": [
+      "Ồn ào",
+      "Lấp lánh",
+      "Nóng nực",
+      "Chật chội"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Đọc câu: 'Mẹ em hiền như cô tiên'. Hình ảnh được so sánh là:",
+    "answers": [
+      "Mẹ em với cô tiên",
+      "Mẹ em với bầu trời",
+      "Cô tiên với hoa",
+      "Không có"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Một đoạn văn thường diễn đạt:",
+    "answers": [
+      "Nhiều ý không liên quan",
+      "Một ý chính",
+      "Một bài thơ",
+      "Một bài toán"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Từ nào có nghĩa gần với 'dũng cảm'?",
+    "answers": [
+      "Nhút nhát",
+      "Can đảm",
+      "Buồn bã",
+      "Mệt mỏi"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong câu chuyện, chi tiết nào giúp câu chuyện hấp dẫn hơn?",
+    "answers": [
+      "Chi tiết bất ngờ",
+      "Câu ngắn",
+      "Ít nhân vật",
+      "Không có đối thoại"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Đọc đoạn văn: 'Mưa rơi tí tách ngoài hiên, bà ngồi vá áo dưới ánh đèn dầu.' Không gian gợi cảm giác gì?",
+    "answers": [
+      "Ấm áp",
+      "Sôi động",
+      "Hài hước",
+      "Ồn ào"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Nếu em viết bài kể về một chuyến đi, phần nào nên kể diễn biến chính?",
+    "answers": [
+      "Mở bài",
+      "Thân bài",
+      "Kết bài",
+      "Nhan đề"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong câu 'Dòng sông quê em hiền hòa như một dải lụa', tác giả muốn nhấn mạnh điều gì?",
+    "answers": [
+      "Dòng sông dài",
+      "Dòng sông mềm mại, êm đềm",
+      "Dòng sông nguy hiểm",
+      "Dòng sông bẩn"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Đọc đoạn văn và chọn thông điệp phù hợp: 'Bạn nhỏ luôn giúp đỡ mọi người dù gặp khó khăn.'",
+    "answers": [
+      "Hãy sống ích kỷ",
+      "Cần chăm chơi",
+      "Biết yêu thương và giúp đỡ",
+      "Không nên tin ai"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong văn miêu tả, chi tiết nào giúp bài văn sinh động hơn?",
+    "answers": [
+      "Nhiều số liệu",
+      "Từ ngữ gợi hình, gợi cảm",
+      "Ít cảm xúc",
+      "Viết thật ngắn"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Đọc câu: 'Tiếng ve ran khắp sân trường gọi hè về.' Từ ngữ nào gợi âm thanh?",
+    "answers": [
+      "Sân trường",
+      "Gọi",
+      "Ran",
+      "Hè"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Nếu em muốn bài văn hấp dẫn hơn, em nên:",
+    "answers": [
+      "Lặp lại nhiều lần",
+      "Dùng từ ngữ phong phú",
+      "Viết thật ngắn",
+      "Không dùng cảm xúc"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong truyện, xung đột thường giúp:",
+    "answers": [
+      "Câu chuyện buồn ngủ hơn",
+      "Nhân vật phát triển và truyện hấp dẫn hơn",
+      "Giảm số nhân vật",
+      "Kết thúc nhanh hơn"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Đọc câu: 'Chiếc lá cuối cùng vẫn kiên cường bám trên cành.' Từ 'kiên cường' thể hiện phẩm chất gì?",
+    "answers": [
+      "Yếu đuối",
+      "Can đảm, bền bỉ",
+      "Buồn bã",
+      "Nhanh nhẹn"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Khi viết văn kể chuyện, điều quan trọng nhất là:",
+    "answers": [
+      "Có diễn biến rõ ràng",
+      "Viết càng dài càng tốt",
+      "Dùng thật nhiều dấu chấm than",
+      "Không cần nhân vật"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong bài văn tả cảnh, tác giả thường quan sát bằng:",
+    "answers": [
+      "Chỉ đôi mắt",
+      "Nhiều giác quan",
+      "Máy tính",
+      "Điện thoại"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Một kết thúc bất ngờ trong truyện thường khiến người đọc:",
+    "answers": [
+      "Nhàm chán",
+      "Khó hiểu",
+      "Thích thú và nhớ lâu",
+      "Bỏ đọc ngay"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Đọc đoạn văn và chọn nhan đề phù hợp: 'Sáng nào ông cũng tưới cây, chăm sóc khu vườn nhỏ đầy hoa.'",
+    "answers": [
+      "Khu vườn của ông",
+      "Cơn mưa mùa hè",
+      "Ngày khai trường",
+      "Chuyến đi biển"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong câu 'Gió chạy tung tăng ngoài ngõ', tác giả đã:",
+    "answers": [
+      "Nhân hóa",
+      "So sánh",
+      "Liệt kê",
+      "Điệp từ"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Đọc câu: 'Bạn nhỏ đứng lặng nhìn chiếc diều bay xa.' Cảm xúc phù hợp nhất là:",
+    "answers": [
+      "Hồi hộp",
+      "Nuối tiếc",
+      "Tức giận",
+      "Hoảng sợ"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Một bài văn hay thường cần:",
+    "answers": [
+      "Ý rõ ràng và cảm xúc chân thật",
+      "Nhiều lỗi chính tả",
+      "Câu rất ngắn",
+      "Không cần mở bài"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong văn nghị luận, người viết cần làm gì để thuyết phục người đọc?",
+    "answers": [
+      "Kể chuyện hài",
+      "Đưa lí lẽ và dẫn chứng",
+      "Viết thật ngắn",
+      "Dùng thật nhiều số"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Ý kiến chính trong bài văn nghị luận gọi là:",
+    "answers": [
+      "Nhân vật",
+      "Luận điểm",
+      "Cốt truyện",
+      "Đoạn văn"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Điều nào dưới đây là dẫn chứng?",
+    "answers": [
+      "Một câu hỏi",
+      "Một cảm xúc",
+      "Ví dụ thực tế để chứng minh",
+      "Một phép tính"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong bài nghị luận về việc đọc sách, câu nào phù hợp làm luận điểm?",
+    "answers": [
+      "Em thích đá bóng.",
+      "Đọc sách giúp mở rộng hiểu biết.",
+      "Hôm nay trời đẹp.",
+      "Con mèo rất dễ thương."
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Một bài văn nghị luận thường nhằm mục đích gì?",
+    "answers": [
+      "Giải trí hoàn toàn",
+      "Kể chuyện cổ tích",
+      "Thuyết phục người đọc",
+      "Miêu tả đồ vật"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 25
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Câu nào dưới đây thể hiện quan điểm cá nhân?",
+    "answers": [
+      "Mưa rơi ngoài sân.",
+      "Em cho rằng cần chăm đọc sách.",
+      "Con mèo đang ngủ.",
+      "Chiếc bàn màu nâu."
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Để bài văn nghị luận hấp dẫn hơn, người viết nên:",
+    "answers": [
+      "Đưa ví dụ gần gũi",
+      "Viết thật dài",
+      "Không cần dẫn chứng",
+      "Lặp lại một ý"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Trong bài nghị luận, phần kết bài thường dùng để:",
+    "answers": [
+      "Mở đầu vấn đề",
+      "Nêu nhân vật",
+      "Khẳng định lại ý kiến",
+      "Kể chuyện cười"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 25
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Khi nghị luận về bảo vệ môi trường, dẫn chứng nào phù hợp nhất?",
+    "answers": [
+      "Nhiều người trồng cây xanh",
+      "Em thích ăn kem",
+      "Con mèo chạy nhanh",
+      "Hôm nay trời nóng"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Ngữ văn",
+    "question": "Một bài văn nghị luận tốt cần có:",
+    "answers": [
+      "Luận điểm rõ ràng",
+      "Nhiều phép tính",
+      "Ít ý kiến",
+      "Không cần kết luận"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "A traveler says: “Hello!” Con nên trả lời:",
+    "answers": [
+      "Goodbye",
+      "Thank you",
+      "Hello",
+      "Sorry"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Which word means “con mèo”?",
+    "answers": [
+      "Dog",
+      "Fish",
+      "Bird",
+      "Cat"
+    ],
+    "correct": "D",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "What is the English word for “quả táo”?",
+    "answers": [
+      "Apple",
+      "Banana",
+      "Orange",
+      "Grape"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "How are you?",
+    "answers": [
+      "Goodbye",
+      "I’m fine",
+      "Thank you",
+      "Hello"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Which word is a fruit?",
+    "answers": [
+      "Apple",
+      "Carrot",
+      "Potato",
+      "Onion"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "What color is the sky?",
+    "answers": [
+      "Green",
+      "Blue",
+      "Black",
+      "Yellow"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the correct sentence:",
+    "answers": [
+      "She go to school.",
+      "She goes to school.",
+      "She going school.",
+      "She to school."
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "I ___ a student.",
+    "answers": [
+      "am",
+      "is",
+      "are",
+      "be"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "My mother ___ cooking.",
+    "answers": [
+      "like",
+      "likes",
+      "liking",
+      "liked"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Which word is an animal?",
+    "answers": [
+      "Book",
+      "Dog",
+      "Chair",
+      "Table"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "What is the opposite of “big”?",
+    "answers": [
+      "Tall",
+      "Small",
+      "Fast",
+      "Hot"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the correct word: 'I ___ football every Sunday.'",
+    "answers": [
+      "play",
+      "plays",
+      "playing",
+      "played"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "What day comes after Monday?",
+    "answers": [
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Sunday"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "How many months are there in a year?",
+    "answers": [
+      "10",
+      "11",
+      "12",
+      "13"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Which word means “trường học”?",
+    "answers": [
+      "Hospital",
+      "School",
+      "Market",
+      "Library"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "What do you use to write?",
+    "answers": [
+      "Pencil",
+      "Chair",
+      "Ball",
+      "Banana"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the correct greeting in the morning:",
+    "answers": [
+      "Good night",
+      "Goodbye",
+      "Good morning",
+      "See you"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the correct sentence:",
+    "answers": [
+      "They is playing.",
+      "They are playing.",
+      "They am playing.",
+      "They playing."
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Lan has two cats. ___ cats are very cute.",
+    "answers": [
+      "Her",
+      "His",
+      "Their",
+      "Its"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "What is the past tense of “go”?",
+    "answers": [
+      "Goed",
+      "Going",
+      "Went",
+      "Gone"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the correct question:",
+    "answers": [
+      "Where you live?",
+      "Where do you live?",
+      "Where does you live?",
+      "Where are live?"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "A robot says: 'I can fly.' What does 'can' mean?",
+    "answers": [
+      "Không thể",
+      "Có thể",
+      "Đang",
+      "Đã"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the correct answer: 'There ___ a book on the table.'",
+    "answers": [
+      "am",
+      "is",
+      "are",
+      "be"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "What is the plural form of “child”?",
+    "answers": [
+      "Childs",
+      "Childes",
+      "Children",
+      "Childrens"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the correct sentence:",
+    "answers": [
+      "He don't like milk.",
+      "He doesn't like milk.",
+      "He not like milk.",
+      "He isn't like milk."
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "What does “library” mean?",
+    "answers": [
+      "Sân chơi",
+      "Thư viện",
+      "Bệnh viện",
+      "Nhà ga"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Which sentence talks about the future?",
+    "answers": [
+      "I went to school.",
+      "I am a student.",
+      "I will visit my grandma.",
+      "I play football."
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the correct word: 'My father is ___ engineer.'",
+    "answers": [
+      "a",
+      "an",
+      "the",
+      "some"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Which word is a verb?",
+    "answers": [
+      "Happy",
+      "Beautiful",
+      "Run",
+      "Table"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "What does “hungry” mean?",
+    "answers": [
+      "Mệt",
+      "Khát",
+      "Đói",
+      "Buồn"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the correct response: 'Thank you!'",
+    "answers": [
+      "Sorry",
+      "You’re welcome",
+      "Good night",
+      "See you"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "A sign says 'No running'. What should you do?",
+    "answers": [
+      "Run fast",
+      "Walk slowly",
+      "Jump high",
+      "Play football"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Which sentence is correct?",
+    "answers": [
+      "She have a bike.",
+      "She has a bike.",
+      "She haves a bike.",
+      "She having a bike."
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the correct preposition: 'The cat is ___ the table.'",
+    "answers": [
+      "in",
+      "on",
+      "at",
+      "under"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Read the sentence: 'Tom was tired because he studied all night.' Why was Tom tired?",
+    "answers": [
+      "He played games",
+      "He studied all night",
+      "He went swimming",
+      "He watched TV"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the best sentence to continue the story: 'Mai lost her way in the forest, so she…'",
+    "answers": [
+      "asked a ranger for help",
+      "slept in class",
+      "bought ice cream",
+      "played football"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "What is the correct order?",
+    "answers": [
+      "always / breakfast / I / eat",
+      "I always eat breakfast",
+      "Always I breakfast eat",
+      "Breakfast always I eat"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the correct comparative sentence:",
+    "answers": [
+      "A tiger is big than a cat.",
+      "A tiger is bigger than a cat.",
+      "A tiger bigger a cat.",
+      "A tiger is biggest than a cat."
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "What does this sentence mean? 'You should drink more water.'",
+    "answers": [
+      "Bạn nên uống nhiều nước hơn",
+      "Bạn không được uống nước",
+      "Bạn thích nước",
+      "Bạn đang uống nước"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the correct answer: 'If it rains tomorrow, we ___ at home.'",
+    "answers": [
+      "stay",
+      "stays",
+      "will stay",
+      "stayed"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 40
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "A student says: 'I forgot my homework.' What is the best response?",
+    "answers": [
+      "Never mind, bring it tomorrow.",
+      "Run away!",
+      "You are terrible!",
+      "Don’t study anymore."
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Read: 'The Earth goes around the Sun.' This sentence is in:",
+    "answers": [
+      "Past tense",
+      "Present simple",
+      "Future tense",
+      "Present continuous"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the correct sentence:",
+    "answers": [
+      "There are too much cars.",
+      "There are too many cars.",
+      "There is too many cars.",
+      "There too many cars."
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 40
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "What is the synonym of “happy”?",
+    "answers": [
+      "Sad",
+      "Angry",
+      "Joyful",
+      "Hungry"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the best title for a story about helping animals:",
+    "answers": [
+      "A Busy Market",
+      "Saving the Puppies",
+      "My Favorite Food",
+      "A Rainy Day"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Read the sentence: 'The boy quickly ran to school.' Which word is an adverb?",
+    "answers": [
+      "Boy",
+      "Quickly",
+      "Ran",
+      "School"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Choose the correct indirect answer: 'Can you help me?'",
+    "answers": [
+      "Yes, I can help you.",
+      "Blue.",
+      "At school.",
+      "Three books."
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "What does 'environment' mean?",
+    "answers": [
+      "Môi trường",
+      "Nhà hàng",
+      "Công viên",
+      "Đồng hồ"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Which sentence gives advice?",
+    "answers": [
+      "You should go to bed early.",
+      "I went to bed early.",
+      "He is sleeping.",
+      "They play football."
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Tiếng Anh",
+    "question": "Read: 'Lucy was nervous before the singing contest.' How did Lucy feel?",
+    "answers": [
+      "Excited",
+      "Calm",
+      "Nervous",
+      "Sleepy"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Nhà thám hiểm cần xác định phương hướng. Dụng cụ nào giúp tốt nhất?",
+    "answers": [
+      "Đồng hồ",
+      "La bàn",
+      "Thước kẻ",
+      "Máy tính"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Thủ đô của Việt Nam là:",
+    "answers": [
+      "Huế",
+      "Đà Nẵng",
+      "Hà Nội",
+      "Hải Phòng"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Việt Nam thuộc châu lục nào?",
+    "answers": [
+      "Châu Âu",
+      "Châu Phi",
+      "Châu Á",
+      "Châu Mỹ"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Bản đồ dùng để:",
+    "answers": [
+      "Nghe nhạc",
+      "Xác định vị trí",
+      "Nấu ăn",
+      "Xem phim"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Biển lớn nằm phía đông Việt Nam là:",
+    "answers": [
+      "Biển Hồ",
+      "Biển Đông",
+      "Biển Tây",
+      "Biển Bắc"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Ai là vị tướng nổi tiếng thời nhà Trần?",
+    "answers": [
+      "Ngô Quyền",
+      "Trần Hưng Đạo",
+      "Lê Lợi",
+      "Quang Trung"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Ai là người cưỡi voi ra trận chống quân Ngô?",
+    "answers": [
+      "Hai Bà Trưng",
+      "Bà Triệu",
+      "Ngô Quyền",
+      "Lý Thường Kiệt"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Sông dài nhất Việt Nam là:",
+    "answers": [
+      "Sông Hồng",
+      "Sông Đà",
+      "Sông Mê Kông",
+      "Sông Đồng Nai"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Mặt Trời mọc ở hướng:",
+    "answers": [
+      "Tây",
+      "Đông",
+      "Nam",
+      "Bắc"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Địa hình nào có độ cao lớn nhất?",
+    "answers": [
+      "Đồng bằng",
+      "Cao nguyên",
+      "Đồi",
+      "Núi"
+    ],
+    "correct": "D",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Trong trận Bạch Đằng, Ngô Quyền đã dùng chiến thuật gì?",
+    "answers": [
+      "Xây thành",
+      "Cắm cọc trên sông",
+      "Dùng voi chiến",
+      "Đào hầm"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Vì sao người xưa thường sống gần sông?",
+    "answers": [
+      "Để dễ xem cá",
+      "Có nước và đất màu mỡ",
+      "Để tránh núi",
+      "Vì thích lạnh"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Khi xem bản đồ, kí hiệu màu xanh thường thể hiện:",
+    "answers": [
+      "Núi",
+      "Rừng",
+      "Nước",
+      "Đường đi"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Đồng bằng sông Cửu Long nổi tiếng về:",
+    "answers": [
+      "Trồng lúa",
+      "Khai thác than",
+      "Nuôi tuần lộc",
+      "Trồng thông"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Nếu ở Việt Nam là ban ngày thì nhiều nơi khác trên Trái Đất có thể là ban đêm vì:",
+    "answers": [
+      "Trái Đất hình vuông",
+      "Trái Đất tự quay",
+      "Mặt Trăng che nắng",
+      "Mặt Trời di chuyển quanh Trái Đất"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Lý Thường Kiệt nổi tiếng với sự kiện nào?",
+    "answers": [
+      "Chiến thắng Bạch Đằng",
+      "Dời đô ra Thăng Long",
+      "Bài thơ Nam quốc sơn hà",
+      "Khởi nghĩa Lam Sơn"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Tại sao cần bảo vệ rừng?",
+    "answers": [
+      "Để lấy nhiều gỗ hơn",
+      "Giữ môi trường và chống xói mòn",
+      "Để xây nhà",
+      "Không có lí do"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Khí hậu miền Bắc Việt Nam có đặc điểm:",
+    "answers": [
+      "Chỉ có mùa hè",
+      "Có bốn mùa",
+      "Lạnh quanh năm",
+      "Không mưa"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Ai là người đã dời đô ra Thăng Long?",
+    "answers": [
+      "Đinh Bộ Lĩnh",
+      "Lý Công Uẩn",
+      "Trần Nhân Tông",
+      "Quang Trung"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Nếu đi từ Bắc vào Nam Việt Nam, khí hậu thường:",
+    "answers": [
+      "Lạnh hơn",
+      "Khô hơn hoàn toàn",
+      "Ấm dần lên",
+      "Có tuyết"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Vì sao chiến thắng Bạch Đằng được xem là chiến thắng quan trọng?",
+    "answers": [
+      "Vì có nhiều thuyền",
+      "Chấm dứt ách đô hộ phương Bắc",
+      "Có nhiều voi chiến",
+      "Xây được thành lớn"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Một vùng có nhiều núi cao và dốc thường gặp khó khăn gì?",
+    "answers": [
+      "Trồng lúa nước",
+      "Đi lại và xây dựng",
+      "Thiếu nắng",
+      "Không có cây"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Người dân ven biển thường làm nghề gì?",
+    "answers": [
+      "Trồng lúa trên núi",
+      "Đánh bắt hải sản",
+      "Khai thác than",
+      "Trồng cà phê"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Tại sao cần tiết kiệm nước sạch?",
+    "answers": [
+      "Vì nước sạch rất ít",
+      "Để nước đổi màu",
+      "Để dễ ngủ",
+      "Không cần tiết kiệm"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Nếu em đi du lịch bằng bản đồ số trên điện thoại, đó là ứng dụng của:",
+    "answers": [
+      "Địa lí",
+      "Âm nhạc",
+      "Thể thao",
+      "Mĩ thuật"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Vì sao đồng bằng thường đông dân cư hơn miền núi?",
+    "answers": [
+      "Có nhiều đất bằng và thuận lợi sinh sống",
+      "Có nhiều tuyết",
+      "Ít đường đi",
+      "Ít cây cối"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Quang Trung nổi tiếng với chiến thắng nào?",
+    "answers": [
+      "Chi Lăng",
+      "Đống Đa",
+      "Bạch Đằng",
+      "Điện Biên Phủ"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Biến đổi khí hậu có thể gây ra điều gì?",
+    "answers": [
+      "Ít mưa hơn mãi mãi",
+      "Nhiệt độ và thời tiết thay đổi bất thường",
+      "Mặt Trời biến mất",
+      "Biển đóng băng hoàn toàn"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Nếu nhìn thấy kí hiệu ngôi sao trên bản đồ hành chính, đó thường là:",
+    "answers": [
+      "Sông lớn",
+      "Núi cao",
+      "Thủ đô hoặc thành phố quan trọng",
+      "Rừng"
+    ],
+    "correct": "C",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Lịch sử & Địa lý",
+    "question": "Tại sao học lịch sử giúp ích cho chúng ta?",
+    "answers": [
+      "Để nhớ chuyện cũ",
+      "Hiểu quá khứ và rút kinh nghiệm cho hiện tại",
+      "Để làm bài toán",
+      "Để xem phim"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Khi tay ướt có nên chạm vào ổ điện không?",
+    "answers": [
+      "Có",
+      "Không",
+      "Đôi khi",
+      "Chỉ buổi tối"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Mũ bảo hiểm giúp:",
+    "answers": [
+      "Làm đẹp",
+      "Bảo vệ đầu",
+      "Tăng chiều cao",
+      "Giữ ấm tay"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Dụng cụ nào dùng để đo chiều dài?",
+    "answers": [
+      "Thước",
+      "Cân",
+      "Nhiệt kế",
+      "Đồng hồ"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Đèn đỏ giao thông nghĩa là:",
+    "answers": [
+      "Đi tiếp",
+      "Dừng lại",
+      "Rẽ phải",
+      "Chạy nhanh"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Khi dùng kéo cần:",
+    "answers": [
+      "Đùa nghịch",
+      "Ném bạn",
+      "Cẩn thận",
+      "Chạy quanh"
+    ],
+    "correct": "C",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Thiết bị nào giúp làm mát không khí?",
+    "answers": [
+      "Tủ lạnh",
+      "Quạt điện",
+      "Đèn pin",
+      "Nồi cơm điện"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Đồ dùng nào cần dùng điện để hoạt động?",
+    "answers": [
+      "Quạt điện",
+      "Cuốn sách",
+      "Bút chì",
+      "Cái thước"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Khi ra khỏi phòng, em nên:",
+    "answers": [
+      "Bật hết điện",
+      "Tắt điện khi không dùng",
+      "Mở tivi",
+      "Để quạt chạy"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Vật liệu nào dễ vỡ nhất?",
+    "answers": [
+      "Nhựa",
+      "Thủy tinh",
+      "Gỗ",
+      "Vải"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Khi thấy dây điện bị hở, em nên:",
+    "answers": [
+      "Chạm thử",
+      "Báo người lớn",
+      "Dùng tay kéo",
+      "Tiếp tục chơi"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Một chiếc xe đạp cần bơm hơi vào bánh để:",
+    "answers": [
+      "Đi nhanh hơn",
+      "Bánh không bị xẹp",
+      "Đổi màu bánh",
+      "Trang trí"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Vì sao cần đội mũ bảo hiểm khi đi xe máy?",
+    "answers": [
+      "Cho đẹp",
+      "Để chống nắng",
+      "Giảm chấn thương khi tai nạn",
+      "Để nhận biết"
+    ],
+    "correct": "C",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Nồi cơm điện hoạt động nhờ nguồn năng lượng nào?",
+    "answers": [
+      "Nước",
+      "Điện",
+      "Gió",
+      "Ánh sáng mặt trời"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Khi sử dụng đồ điện, điều quan trọng nhất là:",
+    "answers": [
+      "Bật thật lâu",
+      "An toàn",
+      "Để gần nước",
+      "Không cần đọc hướng dẫn"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Vật liệu nào thường dùng để làm dây điện?",
+    "answers": [
+      "Gỗ",
+      "Đồng",
+      "Giấy",
+      "Vải"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Khi dùng bếp gas, nếu ngửi thấy mùi gas em nên:",
+    "answers": [
+      "Bật lửa kiểm tra",
+      "Báo người lớn và mở cửa",
+      "Tiếp tục nấu ăn",
+      "Đóng kín cửa"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Một chiếc cầu cần chắc chắn để:",
+    "answers": [
+      "Đẹp hơn",
+      "Chịu được trọng lượng",
+      "Sơn dễ hơn",
+      "Đi nhanh hơn"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Khi học online quá lâu, em nên:",
+    "answers": [
+      "Tiếp tục nhìn màn hình",
+      "Nghỉ mắt một lúc",
+      "Ngồi sát màn hình",
+      "Tắt đèn"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Vì sao cần tiết kiệm điện?",
+    "answers": [
+      "Để bóng đèn sáng yếu",
+      "Giảm lãng phí và bảo vệ môi trường",
+      "Để quạt quay chậm",
+      "Không có lí do"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Trong gia đình, tủ lạnh dùng để:",
+    "answers": [
+      "Giặt quần áo",
+      "Làm lạnh và bảo quản thực phẩm",
+      "Đun nước",
+      "Lau nhà"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Nếu điện thoại sắp hết pin khi đang đi đường, cách tốt nhất là:",
+    "answers": [
+      "Vứt điện thoại",
+      "Mang theo pin sạc dự phòng",
+      "Đập điện thoại",
+      "Ngâm vào nước"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Vì sao không nên vừa sạc điện thoại vừa chơi game lâu?",
+    "answers": [
+      "Điện thoại sẽ đẹp hơn",
+      "Có thể nóng máy và nguy hiểm",
+      "Pin sẽ đổi màu",
+      "Không có lí do"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Một cây cầu treo cần được thiết kế chắc chắn vì:",
+    "answers": [
+      "Để nhìn đẹp",
+      "Phải chịu lực của người và xe",
+      "Để dễ sơn",
+      "Để cao hơn"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Khi thiết kế một chiếc bàn học tốt, điều nào quan trọng?",
+    "answers": [
+      "Màu sắc sặc sỡ",
+      "Phù hợp chiều cao người dùng",
+      "Thật nặng",
+      "Có bánh xe lớn"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Nếu em muốn tiết kiệm nước khi đánh răng, em nên:",
+    "answers": [
+      "Để vòi nước chảy liên tục",
+      "Khóa vòi khi không dùng",
+      "Dùng nhiều nước hơn",
+      "Rửa tay cùng lúc"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Một sản phẩm tái chế giúp:",
+    "answers": [
+      "Tăng rác thải",
+      "Bảo vệ môi trường",
+      "Làm ô nhiễm hơn",
+      "Tốn nhiều tài nguyên hơn"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Khi thấy bạn dùng ổ điện nguy hiểm, em nên:",
+    "answers": [
+      "Mặc kệ",
+      "Khuyên bạn dừng lại và báo người lớn",
+      "Cùng thử",
+      "Chụp hình"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Vì sao cần phân loại rác?",
+    "answers": [
+      "Để tốn thời gian",
+      "Giúp tái chế và xử lý tốt hơn",
+      "Để rác nhiều hơn",
+      "Không có ích"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Một thành phố thông minh thường sử dụng công nghệ để:",
+    "answers": [
+      "Giảm giao thông và tiết kiệm năng lượng",
+      "Tăng khói bụi",
+      "Làm đường hẹp hơn",
+      "Không cần điện"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 40
+  },
+  {
+    "subject": "Công nghệ",
+    "question": "Khi sử dụng Internet để học tập, điều quan trọng là:",
+    "answers": [
+      "Chọn nguồn thông tin đáng tin cậy",
+      "Tin mọi thông tin",
+      "Chỉ xem quảng cáo",
+      "Không cần kiểm tra"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi gặp người lớn tuổi, em nên:",
+    "answers": [
+      "Lờ đi",
+      "Chào hỏi lễ phép",
+      "Cười chế giễu",
+      "Bỏ chạy"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "GDCD",
+    "question": "Bạn làm rơi bút, em nên:",
+    "answers": [
+      "Giẫm lên",
+      "Nhặt giúp bạn",
+      "Giấu đi",
+      "Bỏ mặc"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 15
+  },
+  {
+    "subject": "GDCD",
+    "question": "Đi học đúng giờ thể hiện điều gì?",
+    "answers": [
+      "Lười biếng",
+      "Tôn trọng kỷ luật",
+      "Ham chơi",
+      "Thiếu trách nhiệm"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi mượn đồ của bạn, em cần:",
+    "answers": [
+      "Giữ luôn",
+      "Xin phép và trả lại",
+      "Làm hỏng",
+      "Cho người khác"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "GDCD",
+    "question": "Nếu thấy bạn bị bắt nạt, em nên:",
+    "answers": [
+      "Cổ vũ",
+      "Báo người lớn hoặc giúp bạn",
+      "Quay video cười",
+      "Bỏ đi"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi ăn cơm cùng gia đình, em nên:",
+    "answers": [
+      "Nói leo",
+      "Mời mọi người trước khi ăn",
+      "Chơi điện thoại",
+      "Ăn thật nhanh"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "GDCD",
+    "question": "Việc giữ lời hứa giúp em trở thành người:",
+    "answers": [
+      "Đáng tin cậy",
+      "Ích kỷ",
+      "Lười biếng",
+      "Nóng tính"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi phạm lỗi, em nên:",
+    "answers": [
+      "Đổ lỗi cho người khác",
+      "Xin lỗi và sửa sai",
+      "Bỏ chạy",
+      "Cãi lại"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "GDCD",
+    "question": "Chăm học và làm bài đầy đủ thể hiện:",
+    "answers": [
+      "Tinh thần trách nhiệm",
+      "Lười biếng",
+      "Thiếu trung thực",
+      "Ích kỷ"
+    ],
+    "correct": "A",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "GDCD",
+    "question": "Em nên làm gì để giữ vệ sinh lớp học?",
+    "answers": [
+      "Vứt rác xuống sàn",
+      "Dọn rác đúng nơi",
+      "Vẽ bậy lên bàn",
+      "Làm đổ nước"
+    ],
+    "correct": "B",
+    "difficulty": "Dễ",
+    "time": 20
+  },
+  {
+    "subject": "GDCD",
+    "question": "Nếu vô tình làm hỏng đồ của bạn, em nên:",
+    "answers": [
+      "Giấu đi",
+      "Thành thật xin lỗi và tìm cách sửa",
+      "Đổ lỗi cho người khác",
+      "Bỏ chạy"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "GDCD",
+    "question": "Bạn rủ em quay cóp trong giờ kiểm tra. Em nên:",
+    "answers": [
+      "Đồng ý ngay",
+      "Từ chối và khuyên bạn học thật",
+      "Cho bạn chép hết",
+      "Bỏ bài"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "GDCD",
+    "question": "Một người biết lắng nghe người khác thường là người:",
+    "answers": [
+      "Tôn trọng người khác",
+      "Ích kỷ",
+      "Thiếu kiên nhẫn",
+      "Nóng tính"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi tham gia giao thông, đội mũ bảo hiểm là:",
+    "answers": [
+      "Tùy thích",
+      "Việc làm an toàn và đúng luật",
+      "Không cần thiết",
+      "Chỉ để đẹp"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "GDCD",
+    "question": "Nếu bạn buồn vì điểm kém, em nên:",
+    "answers": [
+      "Chê cười",
+      "Động viên bạn cố gắng",
+      "Bỏ mặc",
+      "Kể cho người khác cười"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "GDCD",
+    "question": "Trung thực nghĩa là:",
+    "answers": [
+      "Nói dối để được khen",
+      "Luôn nói thật và làm đúng",
+      "Che giấu lỗi sai",
+      "Thích gì làm nấy"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi thấy rác ở sân trường, em nên:",
+    "answers": [
+      "Đá đi nơi khác",
+      "Nhặt bỏ đúng chỗ",
+      "Bỏ mặc",
+      "Giẫm lên"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 20
+  },
+  {
+    "subject": "GDCD",
+    "question": "Tôn trọng sự khác biệt nghĩa là:",
+    "answers": [
+      "Chế giễu người khác",
+      "Biết chấp nhận và cư xử lịch sự",
+      "Bắt mọi người giống mình",
+      "Không chơi với ai"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi tranh luận với bạn, em nên:",
+    "answers": [
+      "La hét",
+      "Lắng nghe và nói lịch sự",
+      "Đánh nhau",
+      "Bỏ đi ngay"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "GDCD",
+    "question": "Giữ gìn tài sản công cộng giúp:",
+    "answers": [
+      "Môi trường sống tốt hơn",
+      "Đồ vật nhanh hỏng",
+      "Lãng phí hơn",
+      "Không có ích"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "GDCD",
+    "question": "Nếu bị người lạ rủ đi theo, em nên:",
+    "answers": [
+      "Đi ngay",
+      "Từ chối và báo người lớn",
+      "Im lặng đi theo",
+      "Cho bạn đi cùng"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "GDCD",
+    "question": "Việc giúp đỡ cha mẹ việc nhà thể hiện:",
+    "answers": [
+      "Trách nhiệm với gia đình",
+      "Lười biếng",
+      "Ích kỷ",
+      "Không cần thiết"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "GDCD",
+    "question": "Một người biết xin lỗi khi sai là người:",
+    "answers": [
+      "Can đảm và có trách nhiệm",
+      "Yếu đuối",
+      "Lười biếng",
+      "Ích kỷ"
+    ],
+    "correct": "A",
+    "difficulty": "Trung bình",
+    "time": 25
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi dùng mạng xã hội, em nên:",
+    "answers": [
+      "Tin mọi thông tin",
+      "Ứng xử văn minh và cẩn thận",
+      "Nói xấu người khác",
+      "Chia sẻ mật khẩu"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "GDCD",
+    "question": "Nếu thấy bạn mới bị cô lập, em nên:",
+    "answers": [
+      "Trêu chọc bạn",
+      "Làm quen và giúp bạn hòa nhập",
+      "Bỏ mặc",
+      "Quay video"
+    ],
+    "correct": "B",
+    "difficulty": "Trung bình",
+    "time": 30
+  },
+  {
+    "subject": "GDCD",
+    "question": "Một người bạn thân nhờ em nói dối để che lỗi. Em nên:",
+    "answers": [
+      "Đồng ý vì là bạn thân",
+      "Khuyên bạn thành thật",
+      "Nói dối giúp bạn",
+      "Bỏ mặc"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Tại sao cần tôn trọng nội quy trường học?",
+    "answers": [
+      "Để bị phạt ít hơn",
+      "Giúp mọi người học tập tốt và an toàn",
+      "Cho vui",
+      "Không cần thiết"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi thấy bạn đăng thông tin sai sự thật lên mạng, em nên:",
+    "answers": [
+      "Chia sẻ thêm",
+      "Khuyên bạn gỡ xuống",
+      "Cười theo",
+      "Mặc kệ"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Một học sinh biết quản lý thời gian sẽ:",
+    "answers": [
+      "Làm việc hiệu quả hơn",
+      "Luôn trễ hạn",
+      "Không cần kế hoạch",
+      "Chỉ chơi game"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Nếu em và bạn hiểu lầm nhau, cách tốt nhất là:",
+    "answers": [
+      "Im lặng mãi",
+      "Nói chuyện thẳng thắn, lịch sự",
+      "Đăng bài nói xấu",
+      "Tránh mặt hoàn toàn"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Tại sao cần bảo vệ môi trường?",
+    "answers": [
+      "Để có cuộc sống tốt hơn",
+      "Cho đẹp ảnh",
+      "Không có lí do",
+      "Để xả nhiều rác hơn"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi tham gia hoạt động nhóm, em nên:",
+    "answers": [
+      "Làm hết một mình",
+      "Hợp tác và lắng nghe mọi người",
+      "Không làm gì",
+      "Ra lệnh cho bạn"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Một người có lòng tự trọng sẽ:",
+    "answers": [
+      "Biết giữ phẩm giá và làm điều đúng",
+      "Luôn nói dối",
+      "Không tôn trọng ai",
+      "Chỉ nghĩ cho mình"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi gặp thất bại trong học tập, em nên:",
+    "answers": [
+      "Bỏ cuộc",
+      "Cố gắng rút kinh nghiệm và tiếp tục",
+      "Đổ lỗi cho người khác",
+      "Không học nữa"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Công dân có trách nhiệm gì với cộng đồng?",
+    "answers": [
+      "Chỉ lo cho bản thân",
+      "Biết giúp đỡ và sống có trách nhiệm",
+      "Không cần quan tâm ai",
+      "Làm điều mình thích"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 40
+  },
+  {
+    "subject": "GDCD",
+    "question": "Nếu thấy bạn bị bắt nạt trên mạng, em nên:",
+    "answers": [
+      "Chia sẻ cho vui",
+      "Báo người lớn và bảo vệ bạn",
+      "Bỏ mặc",
+      "Bình luận chế giễu"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 40
+  },
+  {
+    "subject": "GDCD",
+    "question": "Tại sao cần biết kiểm soát cảm xúc?",
+    "answers": [
+      "Để cư xử phù hợp hơn",
+      "Để giận lâu hơn",
+      "Để thắng cãi nhau",
+      "Không có ích"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Một xã hội văn minh cần:",
+    "answers": [
+      "Mọi người tôn trọng nhau",
+      "Ai mạnh người đó thắng",
+      "Không cần luật lệ",
+      "Nhiều cãi vã"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi thấy người gặp khó khăn, hành động tốt nhất là:",
+    "answers": [
+      "Phớt lờ",
+      "Giúp đỡ trong khả năng",
+      "Cười nhạo",
+      "Quay video"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Việc bảo vệ thông tin cá nhân trên mạng giúp:",
+    "answers": [
+      "An toàn hơn khi dùng Internet",
+      "Nổi tiếng hơn",
+      "Có nhiều quảng cáo",
+      "Không có ích"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Một người biết hợp tác sẽ:",
+    "answers": [
+      "Làm việc nhóm hiệu quả hơn",
+      "Luôn tranh cãi",
+      "Không nghe ai",
+      "Chỉ làm theo ý mình"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Nếu em chứng kiến hành vi không trung thực, em nên:",
+    "answers": [
+      "Im lặng hoàn toàn",
+      "Khuyên người đó sửa sai",
+      "Làm theo",
+      "Cổ vũ"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Tại sao cần yêu thương gia đình?",
+    "answers": [
+      "Vì gia đình là nơi gắn bó và hỗ trợ nhau",
+      "Không cần lí do",
+      "Để được cho tiền",
+      "Để khoe với bạn"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Một người có trách nhiệm thường:",
+    "answers": [
+      "Hoàn thành việc được giao",
+      "Hay quên việc",
+      "Đổ lỗi cho người khác",
+      "Làm việc tùy hứng"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi có ý kiến khác bạn, em nên:",
+    "answers": [
+      "Tôn trọng và trao đổi lịch sự",
+      "Cãi nhau",
+      "Chế giễu",
+      "Không nói gì"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Điều quan trọng nhất của tình bạn đẹp là:",
+    "answers": [
+      "Tôn trọng và chân thành",
+      "Cho quà đắt tiền",
+      "Nghe lời vô điều kiện",
+      "Không bao giờ góp ý"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 40
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi tham gia mạng xã hội, điều nào quan trọng nhất?",
+    "answers": [
+      "Đăng thật nhiều ảnh",
+      "Ứng xử có trách nhiệm",
+      "Bình luận gây chú ý",
+      "Tin mọi thông tin"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 40
+  },
+  {
+    "subject": "GDCD",
+    "question": "Một người biết vượt khó sẽ:",
+    "answers": [
+      "Luôn cố gắng dù gặp thử thách",
+      "Bỏ cuộc ngay",
+      "Chờ người khác làm hộ",
+      "Không học nữa"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  },
+  {
+    "subject": "GDCD",
+    "question": "Khi được người khác giúp đỡ, em nên:",
+    "answers": [
+      "Im lặng",
+      "Biết cảm ơn",
+      "Xem là điều hiển nhiên",
+      "Đòi hỏi thêm"
+    ],
+    "correct": "B",
+    "difficulty": "Khó",
+    "time": 30
+  },
+  {
+    "subject": "GDCD",
+    "question": "Tại sao cần sống trung thực?",
+    "answers": [
+      "Để được mọi người tin tưởng",
+      "Để dễ nói dối hơn",
+      "Không có ích",
+      "Để khỏi học bài"
+    ],
+    "correct": "A",
+    "difficulty": "Khó",
+    "time": 35
+  }
+];
+</script>
+<script>
+const subjects = ["Toán","Ngữ văn","Tiếng Anh","KHTN","Lịch sử & Địa lý","Công nghệ","GDCD","Tin học"];
+let bank = (window.QUESTION_BANK || []).filter(q => q.question && q.answers && q.answers.length === 4);
+let order = [];
+let currentIndex = 0;
+let current = null;
+let lives = 3, coins = 0, score = 0, combo = 0, rescue = 0, streak = 1, dailyCorrect = 0;
+let answered = false;
+let timer = 25, timerId = null, soundOn = true;
+let heroX = 70, targetX = 70, heroState = "idle", enemyShake = 0, coinBurst = 0, chestGlow = 0;
+
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+const els = {
+  lives: document.getElementById("lives"),
+  coins: document.getElementById("coins"),
+  score: document.getElementById("score"),
+  combo: document.getElementById("combo"),
+  streak: document.getElementById("streak"),
+  rescueProgress: document.getElementById("rescueProgress"),
+  progressText: document.getElementById("progressText"),
+  questionText: document.getElementById("questionText"),
+  answers: document.getElementById("answers"),
+  subjectBadge: document.getElementById("subjectBadge"),
+  difficultyBadge: document.getElementById("difficultyBadge"),
+  timer: document.getElementById("timer"),
+  gameMessage: document.getElementById("gameMessage"),
+  startBtn: document.getElementById("startBtn"),
+  nextBtn: document.getElementById("nextBtn"),
+  worldList: document.getElementById("worldList"),
+  toggleSound: document.getElementById("toggleSound"),
+  dailyChest: document.getElementById("dailyChest")
+};
+
+function shuffle(arr) {
+  return arr.map(v => [Math.random(), v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+}
+
+function makeOrder() {
+  const grouped = {};
+  subjects.forEach(s => grouped[s] = shuffle(bank.filter(q => q.subject === s)));
+  const result = [];
+  let added = true;
+  while (added) {
+    added = false;
+    subjects.forEach(s => {
+      if (grouped[s] && grouped[s].length) {
+        result.push(grouped[s].shift());
+        added = true;
+      }
+    });
+  }
+  return result;
+}
+
+function initWorldList() {
+  els.worldList.innerHTML = "";
+  subjects.forEach((s, i) => {
+    const div = document.createElement("div");
+    div.className = "world-pill";
+    div.id = "world-" + i;
+    div.innerHTML = `${iconForSubject(s)} ${shortSubject(s)}`;
+    els.worldList.appendChild(div);
+  });
+}
+
+function shortSubject(s) {
+  return {
+    "Lịch sử & Địa lý": "Sử-Địa",
+    "Ngữ văn": "Văn",
+    "Tiếng Anh": "Anh",
+    "KHTN": "KHTN",
+    "Công nghệ": "Công nghệ",
+    "GDCD": "GDCD",
+    "Tin học": "Tin",
+    "Toán": "Toán"
+  }[s] || s;
+}
+
+function iconForSubject(s) {
+  return {
+    "Toán": "➗",
+    "Ngữ văn": "📚",
+    "Tiếng Anh": "🌎",
+    "KHTN": "🔬",
+    "Lịch sử & Địa lý": "🗺️",
+    "Công nghệ": "🛠️",
+    "GDCD": "🤝",
+    "Tin học": "💻"
+  }[s] || "⭐";
+}
+
+function updateWorldList() {
+  subjects.forEach((s, i) => {
+    const div = document.getElementById("world-" + i);
+    if (!div) return;
+    div.classList.toggle("active", current && current.subject === s);
+  });
+}
+
+function setStats() {
+  els.lives.textContent = lives;
+  els.coins.textContent = coins;
+  els.score.textContent = score;
+  els.combo.textContent = combo;
+  els.streak.textContent = streak;
+  els.rescueProgress.style.width = rescue + "%";
+  els.progressText.textContent = rescue + "%";
+  els.dailyChest.textContent = `${dailyCorrect}/10 câu đúng`;
+}
+
+function startGame() {
+  order = makeOrder();
+  currentIndex = 0;
+  lives = 3; coins = 0; score = 0; combo = 0; rescue = 0; dailyCorrect = 0;
+  heroX = 70; targetX = 70;
+  els.startBtn.textContent = "🔄 Chơi lại";
+  loadQuestion();
+  setStats();
+  updateWorldList();
+  message("Vương quốc tri thức đã mở! Trả lời đúng để anh hùng tiến lên.");
+  playSound("start");
+}
+
+function loadQuestion() {
+  if (!order.length) return;
+  current = order[currentIndex % order.length];
+  answered = false;
+  timer = Math.min(current.time || 25, 35);
+  els.timer.textContent = timer;
+  els.subjectBadge.textContent = `${iconForSubject(current.subject)} ${current.subject}`;
+  els.difficultyBadge.textContent = current.difficulty || "Trung bình";
+  els.questionText.textContent = current.question;
+  els.answers.innerHTML = "";
+  els.nextBtn.disabled = true;
+
+  current.answers.forEach((a, i) => {
+    const btn = document.createElement("button");
+    btn.className = "answer-btn";
+    btn.textContent = String.fromCharCode(65 + i) + ". " + a;
+    btn.onclick = () => answer(i, btn);
+    els.answers.appendChild(btn);
+  });
+  updateWorldList();
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(timerId);
+  timerId = setInterval(() => {
+    if (answered) return;
+    timer--;
+    els.timer.textContent = timer;
+    if (timer <= 0) {
+      clearInterval(timerId);
+      timeOut();
+    }
+  }, 1000);
+}
+
+function answer(i, btn) {
+  if (answered || !current) return;
+  answered = true;
+  clearInterval(timerId);
+
+  const correctIndex = "ABCD".indexOf(current.correct);
+  const buttons = Array.from(document.querySelectorAll(".answer-btn"));
+  buttons[correctIndex]?.classList.add("correct");
+
+  if (i === correctIndex) {
+    btn.classList.add("correct");
+    combo++;
+    dailyCorrect++;
+    const earned = 100 + combo * 10;
+    coins += earned;
+    score += difficultyScore(current.difficulty) + Math.max(0, timer);
+    rescue = Math.min(100, rescue + 3);
+    targetX = Math.min(735, targetX + 62);
+    heroState = "jump";
+    coinBurst = 40;
+    if (dailyCorrect >= 10) {
+      chestGlow = 80;
+      message(`Mở rương ngày! Con đã đúng ${dailyCorrect} câu. +${earned} xu và nhận huy hiệu chăm học! 🎁`);
+    } else {
+      message(`Chính xác! +${earned} xu. Còn ${Math.max(0, 10-dailyCorrect)} câu đúng để mở rương ngày!`);
+    }
+    playSound("correct");
+    if (rescue >= 100) setTimeout(winGame, 700);
+  } else {
+    btn.classList.add("wrong");
+    combo = 0;
+    lives--;
+    enemyShake = 28;
+    heroState = "hit";
+    message("Gần đúng rồi! Mất 1 tim nhưng anh hùng vẫn có thể thử tiếp.");
+    playSound("wrong");
+    if (lives <= 0) setTimeout(gameOver, 900);
+  }
+  setStats();
+  els.nextBtn.disabled = false;
+}
+
+function timeOut() {
+  answered = true;
+  lives--;
+  combo = 0;
+  enemyShake = 28;
+  message("Hết giờ! Hãy bình tĩnh, câu sau mình làm tốt hơn.");
+  playSound("wrong");
+  setStats();
+  els.nextBtn.disabled = false;
+  if (lives <= 0) setTimeout(gameOver, 900);
+}
+
+function nextQuestion() {
+  currentIndex++;
+  heroState = "run";
+  loadQuestion();
+}
+
+function difficultyScore(d) {
+  if (d === "Dễ") return 50;
+  if (d === "Khó") return 150;
+  return 100;
+}
+
+function message(text) { els.gameMessage.textContent = text; }
+
+function gameOver() {
+  clearInterval(timerId);
+  message("Hết mạng rồi! Nhưng học giỏi là biết thử lại. Bấm Chơi lại nhé!");
+  els.questionText.textContent = "Anh hùng cần luyện thêm để cứu công chúa!";
+  els.answers.innerHTML = "";
+  playSound("gameover");
+}
+
+function winGame() {
+  clearInterval(timerId);
+  rescue = 100;
+  setStats();
+  message("Chiến thắng! Công chúa đã được cứu nhờ tri thức! 👸🏰");
+  els.questionText.textContent = "🎉 Chúc mừng! Con đã hoàn thành hành trình hôm nay!";
+  els.answers.innerHTML = "";
+  chestGlow = 120;
+  playSound("win");
+}
+
+function playSound(type) {
+  if (!soundOn) return;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+  const ctxAudio = new AC();
+  const gain = ctxAudio.createGain();
+  gain.gain.value = 0.055;
+  gain.connect(ctxAudio.destination);
+
+  const notes = {
+    correct: [660, 880, 1320],
+    wrong: [180, 120],
+    start: [330, 440, 660],
+    win: [523, 659, 784, 1046],
+    gameover: [220, 165, 110]
+  }[type] || [440];
+
+  notes.forEach((freq, idx) => {
+    const osc = ctxAudio.createOscillator();
+    osc.type = type === "wrong" || type === "gameover" ? "sawtooth" : "square";
+    osc.frequency.value = freq;
+    osc.connect(gain);
+    const t = ctxAudio.currentTime + idx * 0.12;
+    osc.start(t);
+    osc.stop(t + 0.1);
+  });
+}
+
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  drawSky();
+  drawGround();
+  drawCastle();
+  drawObstacles();
+  drawHero();
+  drawEnemy();
+  drawPrincess();
+  drawPet();
+  drawChest();
+  drawHUDText();
+
+  if (Math.abs(heroX - targetX) > 1) {
+    heroX += (targetX - heroX) * 0.065;
+  } else if (heroState === "run") heroState = "idle";
+
+  if (enemyShake > 0) enemyShake--;
+  if (coinBurst > 0) coinBurst--;
+  if (chestGlow > 0) chestGlow--;
+
+  requestAnimationFrame(draw);
+}
+
+function drawSky() {
+  const g = ctx.createLinearGradient(0,0,0,300);
+  g.addColorStop(0, "#75d8ff");
+  g.addColorStop(1, "#d6f7ff");
+  ctx.fillStyle = g;
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  drawCloud(90,60,1.0);
+  drawCloud(350,45,.75);
+  drawCloud(650,75,1.05);
+
+  // decorative rainbow
+  ctx.lineWidth = 12;
+  ["#ff5d73","#ffd447","#54d66f","#54b6ff","#8b5cf6"].forEach((c,i)=>{
+    ctx.strokeStyle = c;
+    ctx.beginPath();
+    ctx.arc(455, 330, 260-i*14, Math.PI*1.05, Math.PI*1.95);
+    ctx.stroke();
+  });
+
+  // hills
+  ctx.fillStyle = "#82df73";
+  ctx.beginPath(); ctx.arc(140,340,110,Math.PI,0); ctx.fill();
+  ctx.fillStyle = "#65c96a";
+  ctx.beginPath(); ctx.arc(380,350,150,Math.PI,0); ctx.fill();
+  ctx.fillStyle = "#8ce978";
+  ctx.beginPath(); ctx.arc(690,350,135,Math.PI,0); ctx.fill();
+}
+
+function drawCloud(x,y,s) {
+  ctx.fillStyle = "rgba(255,255,255,.9)";
+  ctx.beginPath();
+  ctx.arc(x, y, 22*s, 0, Math.PI*2);
+  ctx.arc(x+28*s, y-8*s, 30*s, 0, Math.PI*2);
+  ctx.arc(x+58*s, y, 22*s, 0, Math.PI*2);
+  ctx.fill();
+}
+
+function drawGround() {
+  ctx.fillStyle = "#56bd48";
+  ctx.fillRect(0,305,900,125);
+  ctx.fillStyle = "#8b5a2b";
+  ctx.fillRect(0,355,900,75);
+  ctx.fillStyle = "rgba(255,255,255,.18)";
+  for (let i=0;i<900;i+=50) ctx.fillRect(i,355,25,10);
+  ctx.fillStyle = "#fff7bd";
+  ctx.fillRect(0,300,900,8);
+}
+
+function drawObstacles() {
+  const bricks = [185, 300, 430, 560];
+  bricks.forEach((x, idx) => {
+    ctx.fillStyle = idx % 2 ? "#d98435" : "#c96c2b";
+    roundedRect(x,265,48,40,7);
+    ctx.fill();
+    ctx.strokeStyle = "#7b3b17";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(x,265,48,40);
+    ctx.beginPath(); ctx.moveTo(x,285); ctx.lineTo(x+48,285); ctx.moveTo(x+24,265); ctx.lineTo(x+24,305); ctx.stroke();
+  });
+
+  // floating reward coins
+  for (let i=0;i<5;i++) {
+    const x = 230 + i*78;
+    ctx.save();
+    ctx.translate(x,222 + Math.sin(Date.now()/250+i)*5);
+    ctx.fillStyle = "#ffd93d";
+    ctx.beginPath(); ctx.ellipse(0,0,13,18,0,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle = "#b77c00"; ctx.lineWidth = 3; ctx.stroke();
+    ctx.fillStyle = "#fff6a5"; ctx.fillRect(-3,-10,6,20);
+    ctx.restore();
+  }
+
+  if (coinBurst > 0) {
+    for (let i=0;i<10;i++) {
+      const ang = i/10*Math.PI*2;
+      ctx.fillStyle = "#ffd93d";
+      ctx.beginPath();
+      ctx.arc(heroX+38+Math.cos(ang)*(48-coinBurst), 250+Math.sin(ang)*(48-coinBurst), 7,0,Math.PI*2);
+      ctx.fill();
+    }
+  }
+}
+
+function drawHero() {
+  const yBase = 300;
+  const jump = heroState === "jump" ? Math.sin(Date.now()/110)*18 + 18 : 0;
+  const hitOffset = heroState === "hit" ? Math.sin(Date.now()/35)*7 : 0;
+  const runBob = heroState === "run" ? Math.sin(Date.now()/85)*3 : 0;
+  const x = heroX + hitOffset;
+  const y = yBase - Math.abs(jump) + runBob;
+
+  ctx.fillStyle = "rgba(0,0,0,.18)";
+  ctx.beginPath(); ctx.ellipse(x+38, 327, 38, 10, 0,0,Math.PI*2); ctx.fill();
+
+  // cape
+  ctx.fillStyle = "#ffcc00";
+  ctx.beginPath();
+  ctx.moveTo(x+18,y-86); ctx.lineTo(x-10,y-54); ctx.lineTo(x+19,y-42); ctx.fill();
+
+  // legs
+  ctx.fillStyle = "#2354d4";
+  roundedRect(x+18, y-45, 18, 42, 6); ctx.fill();
+  roundedRect(x+44, y-45, 18, 42, 6); ctx.fill();
+
+  // shoes
+  ctx.fillStyle = "#5a2d12";
+  roundedRect(x+10, y-5, 31, 12, 6); ctx.fill();
+  roundedRect(x+40, y-5, 31, 12, 6); ctx.fill();
+
+  // body
+  ctx.fillStyle = "#f04444";
+  roundedRect(x+17, y-94, 52, 55, 13); ctx.fill();
+
+  // overalls
+  ctx.fillStyle = "#2365e8";
+  roundedRect(x+24, y-79, 38, 39, 8); ctx.fill();
+
+  // buttons
+  ctx.fillStyle = "#ffd447";
+  ctx.beginPath(); ctx.arc(x+31,y-63,4,0,Math.PI*2); ctx.arc(x+55,y-63,4,0,Math.PI*2); ctx.fill();
+
+  // arms / gloves
+  ctx.strokeStyle = "#f04444"; ctx.lineWidth = 12; ctx.lineCap = "round";
+  ctx.beginPath(); ctx.moveTo(x+18,y-76); ctx.lineTo(x+4,y-54); ctx.moveTo(x+68,y-76); ctx.lineTo(x+82,y-57); ctx.stroke();
+  ctx.fillStyle = "#fff";
+  ctx.beginPath(); ctx.arc(x+2,y-53,9,0,Math.PI*2); ctx.arc(x+84,y-56,9,0,Math.PI*2); ctx.fill();
+
+  // neck/head
+  ctx.fillStyle = "#ffd2a6";
+  roundedRect(x+35,y-104,16,14,5); ctx.fill();
+  ctx.beginPath(); ctx.arc(x+43, y-122, 30, 0, Math.PI*2); ctx.fill();
+
+  // hair
+  ctx.fillStyle = "#5b2d10";
+  ctx.beginPath(); ctx.arc(x+31,y-122,9,0,Math.PI*2); ctx.arc(x+55,y-124,9,0,Math.PI*2); ctx.fill();
+
+  // cap
+  ctx.fillStyle = "#f04444";
+  roundedRect(x+14, y-153, 58, 20, 7); ctx.fill();
+  ctx.beginPath(); ctx.arc(x+43, y-137, 30, Math.PI, 0); ctx.fill();
+  ctx.fillStyle = "white"; ctx.beginPath(); ctx.arc(x+43, y-137, 11,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = "#f04444"; ctx.font = "bold 13px Arial"; ctx.textAlign = "center"; ctx.fillText("H", x+43, y-132);
+
+  // face
+  ctx.fillStyle = "#111";
+  ctx.beginPath(); ctx.arc(x+34, y-124, 3,0,Math.PI*2); ctx.arc(x+53, y-124, 3,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle = "#8a3d18"; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.arc(x+43, y-112, 10, 0.1, Math.PI-0.1); ctx.stroke();
+
+  // sparkle when combo
+  if (combo >= 3) {
+    ctx.fillStyle = "#fff";
+    ctx.font = "22px Arial";
+    ctx.fillText("✨", x+78, y-132);
+  }
+}
+
+function drawEnemy() {
+  const x = 675 + (enemyShake ? Math.sin(Date.now()/28)*12 : 0);
+  const y = 288;
+  ctx.fillStyle = "#5f37b8";
+  ctx.beginPath(); ctx.arc(x,y,36,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = "#764bd6";
+  ctx.beginPath(); ctx.arc(x-16,y+12,18,0,Math.PI*2); ctx.arc(x+16,y+12,18,0,Math.PI*2); ctx.fill();
+
+  ctx.fillStyle = "#fff";
+  ctx.beginPath(); ctx.arc(x-13,y-9,10,0,Math.PI*2); ctx.arc(x+13,y-9,10,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = "#111";
+  ctx.beginPath(); ctx.arc(x-13,y-9,4,0,Math.PI*2); ctx.arc(x+13,y-9,4,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = "#ff4b4b"; roundedRect(x-18,y+11,36,8,4); ctx.fill();
+
+  ctx.fillStyle = "#ffd447";
+  ctx.beginPath(); ctx.moveTo(x-32,y-35); ctx.lineTo(x-18,y-55); ctx.lineTo(x-8,y-32); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x+32,y-35); ctx.lineTo(x+18,y-55); ctx.lineTo(x+8,y-32); ctx.fill();
+
+  ctx.fillStyle = "rgba(0,0,0,.16)";
+  ctx.beginPath(); ctx.ellipse(x,326,42,10,0,0,Math.PI*2); ctx.fill();
+}
+
+function drawCastle() {
+  ctx.fillStyle = "#ffcf6e";
+  roundedRect(765,205,92,100,8); ctx.fill();
+  ctx.fillStyle = "#e67e22";
+  roundedRect(745,250,132,58,8); ctx.fill();
+  ctx.fillStyle = "#c0392b";
+  ctx.beginPath(); ctx.moveTo(765,205); ctx.lineTo(811,162); ctx.lineTo(857,205); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(745,250); ctx.lineTo(775,216); ctx.lineTo(805,250); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(817,250); ctx.lineTo(847,216); ctx.lineTo(877,250); ctx.fill();
+  ctx.fillStyle = "#704214"; roundedRect(798,263,28,45,7); ctx.fill();
+  ctx.fillStyle = "#7dd8ff";
+  ctx.fillRect(782,223,14,18);
+  ctx.fillRect(832,223,14,18);
+}
+
+function drawPrincess() {
+  const x = 812, y = 175 + Math.sin(Date.now()/400)*4;
+  ctx.fillStyle = "#ffd2a6";
+  ctx.beginPath(); ctx.arc(x,y,17,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = "#ff79c6";
+  ctx.beginPath(); ctx.moveTo(x, y+18); ctx.lineTo(x-31, y+78); ctx.lineTo(x+31, y+78); ctx.fill();
+  ctx.fillStyle = "#ff4fa3";
+  ctx.beginPath(); ctx.arc(x,y+43,25,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = "#ffd447";
+  ctx.beginPath(); ctx.moveTo(x-18,y-16); ctx.lineTo(x-8,y-34); ctx.lineTo(x,y-16); ctx.lineTo(x+8,y-34); ctx.lineTo(x+18,y-16); ctx.fill();
+  ctx.fillStyle = "#111"; ctx.beginPath(); ctx.arc(x-6,y-3,2,0,Math.PI*2); ctx.arc(x+6,y-3,2,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle = "#8a3d18"; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x,y+3,7,0.1,Math.PI-0.1); ctx.stroke();
+}
+
+function drawPet() {
+  const x = Math.max(20, heroX - 42), y = 312 + Math.sin(Date.now()/180)*4;
+  ctx.fillStyle = "#ffcf54";
+  ctx.beginPath(); ctx.arc(x,y-22,18,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = "#ff9f1c";
+  ctx.beginPath(); ctx.moveTo(x-13,y-35); ctx.lineTo(x-4,y-53); ctx.lineTo(x+2,y-34); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x+13,y-35); ctx.lineTo(x+4,y-53); ctx.lineTo(x-2,y-34); ctx.fill();
+  ctx.fillStyle = "#111"; ctx.beginPath(); ctx.arc(x-6,y-25,2,0,Math.PI*2); ctx.arc(x+6,y-25,2,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = "rgba(0,0,0,.14)";
+  ctx.beginPath(); ctx.ellipse(x,326,21,6,0,0,Math.PI*2); ctx.fill();
+}
+
+function drawChest() {
+  const x = 55, y = 240;
+  if (chestGlow > 0) {
+    ctx.fillStyle = "rgba(255, 230, 80, .35)";
+    ctx.beginPath(); ctx.arc(x+30,y+28,55 + Math.sin(Date.now()/80)*8,0,Math.PI*2); ctx.fill();
+  }
+  ctx.fillStyle = "#b86a22"; roundedRect(x,y+20,62,40,7); ctx.fill();
+  ctx.fillStyle = "#e6a23c"; roundedRect(x,y,62,30,9); ctx.fill();
+  ctx.fillStyle = "#ffd447"; ctx.fillRect(x+25,y,12,60);
+  ctx.fillStyle = "#fff2a4"; roundedRect(x+22,y+28,18,14,4); ctx.fill();
+}
+
+function drawHUDText() {
+  ctx.fillStyle = "rgba(0,0,0,.50)";
+  ctx.font = "bold 20px Arial";
+  ctx.textAlign = "left";
+  ctx.fillText("Đúng → nhảy qua thử thách, ăn xu, mở rương ngày!", 20, 32);
+}
+
+function roundedRect(x,y,w,h,r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+els.startBtn.onclick = startGame;
+els.nextBtn.onclick = nextQuestion;
+els.toggleSound.onclick = () => {
+  soundOn = !soundOn;
+  els.toggleSound.textContent = soundOn ? "🔊 Âm thanh" : "🔇 Tắt tiếng";
+};
+
+initWorldList();
+setStats();
+draw();
+
+</script>
+</body>
+</html>
